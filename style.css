@@ -1,0 +1,11 @@
+body {
+    display: flex;
+}
+
+label {
+    display: block;
+}
+
+button {
+    display: block;
+}
