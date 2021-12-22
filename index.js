@@ -16,3 +16,11 @@ document.getElementById("day2task1").onclick = function() {
 document.getElementById("day2task2").onclick = function() {
     output.value = solveDay2Task2(input.value);
 }
+
+document.getElementById("day3task1").onclick = function() {
+    output.value = solveDay3Task1(input.value);
+}
+
+document.getElementById("day3task2").onclick = function() {
+    output.value = solveDay3Task2(input.value);
+}
