@@ -1,4 +1,4 @@
-function solveDay1Task2(inputString) {
+function solve2021Day1Task2(inputString) {
     let solution = 0;
     let sumsOfMeasurements = [];
 

@@ -1,4 +1,4 @@
-function solveDay2Task1(inputString) {
+function solve2021Day2Task1(inputString) {
     let depth = 0;
     let position = 0;
 

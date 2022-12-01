@@ -1,4 +1,4 @@
-function solveDay1Task1(inputString) {
+function solve2021Day1Task1(inputString) {
     let solution = 0;
 
     let depthsArray = inputString.split("\n").map(item => parseInt(item, 10));

@@ -9,3 +9,7 @@ label {
 button {
     display: block;
 }
+
+.year {
+    margin: 0 10px;
+}

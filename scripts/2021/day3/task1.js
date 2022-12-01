@@ -1,4 +1,4 @@
-function solveDay3Task1(inputString) {
+function solve2021Day3Task1(inputString) {
     let bits = inputString.split("\n");
     let gamma = new Array(bits[0].length).fill(0);
     let epsilon = new Array(bits[0].length).fill(0);
