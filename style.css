@@ -1,5 +1,15 @@
+html {
+    background: #1d1b1b;
+    color: #ebebeb;
+}
+
 body {
     display: flex;
+}
+
+textarea {
+    background: #1d1b1b;
+    color: #ebebeb;
 }
 
 label {
