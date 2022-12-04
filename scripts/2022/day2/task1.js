@@ -5,7 +5,7 @@ function solve2022Day2Task1(inputString) {
     let solution = 0;
     let games = inputString.split("\n");
 
-    games.forEach(game => solution += Combinations1.get(game))
+    games.forEach((game) => (solution += Combinations1.get(game)));
     return solution;
 }
 

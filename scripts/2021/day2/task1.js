@@ -10,16 +10,17 @@ function solve2021Day2Task1(inputString) {
         let value = parseInt(commandValuesArray[1], 10);
 
         switch (command) {
-            case "forward": position += value;
-            break;
-            case "up": depth -= value;
-            break;
-            case "down": depth += value;
-            break;
+            case "forward":
+                position += value;
+                break;
+            case "up":
+                depth -= value;
+                break;
+            case "down":
+                depth += value;
+                break;
         }
-    })
+    });
 
     return depth * position;
 }
-
-
