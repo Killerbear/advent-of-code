@@ -1,15 +1,36 @@
+let stackCount = 0;
+let stack = [];
+
 function solve2022Day5Task1(inputString) {
-    let solution = 0;
-    let assignmentPairs = inputString.split("\n");
-    let assignments = [];
-    assignmentPairs.forEach((assignmentPair, index) => (assignments[index] = assignmentPair.split(",")));
-    assignments = assignments.flat();
-    for (let i = 0; i < assignments.length; i = i + 2) {
-        let [min1, max1] = assignments[i].split("-").map((item) => parseInt(item, 10));
-        let [min2, max2] = assignments[i + 1].split("-").map((item) => parseInt(item, 10));
-        if ((min1 <= min2 && max1 >= max2) || (min2 <= min1 && max2 >= max1)) {
-            solution++;
+    let stackInput = inputString.slice(0, inputString.indexOf("1"));
+    let procedures = "m" + inputString.slice(inputString.indexOf("move") + 1);
+
+    createStack(stackInput);
+    moveCrane(procedures);
+
+    return stack.map((stack) => stack[stack.length - 1]).join("");
+}
+
+function createStack(input) {
+    input.split("\n").map((line, index) => {
+        if (index === 0) {
+            stackCount = (line.length + 1) / 4;
+            stack = [...new Array(stackCount)].map(() => new Array(0));
         }
-    }
-    return solution;
+        for (let i = 0; i < stackCount; i++) {
+            let crate = line.slice(1 + 4 * i, 2 + 4 * i);
+            if (crate !== " " && crate !== "") {
+                stack[i].unshift(crate);
+            }
+        }
+    });
+}
+
+function moveCrane(procedures) {
+    procedures.split("\n").map((procedure) => {
+        let [empty1, count, empty2, from, empty3, to] = procedure.split(" ");
+        for (let i = 0; i < count; i++) {
+            stack[to - 1].push(stack[from - 1].pop());
+        }
+    });
 }
