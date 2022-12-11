@@ -1,64 +1,51 @@
 function solve2022Day8Task1(inputString) {
     let rows = inputString.split("\n");
     let grid = [];
-    let visibleGrid = [];
+    let visibleTreesGrid = [];
     let visibleTreesCount = (rows.length - 1) * 4;
 
     rows.map((row, rowIndex) => {
         grid.push([]);
-        visibleGrid.push([]);
+        visibleTreesGrid.push([]);
         row.split("").map((col, colIndex) => {
             grid[rowIndex].push([]);
-            visibleGrid[rowIndex].push([]);
-            visibleGrid[rowIndex][colIndex] = 0;
+            visibleTreesGrid[rowIndex].push([]);
+            visibleTreesGrid[rowIndex][colIndex] = 0;
             grid[rowIndex][colIndex] = col;
         });
     });
 
-    console.log(grid);
-    console.log(visibleGrid);
-
-    for (let i = 1; i < rows.length - 1; i++) {
-        let highestTree = grid[i][0];
-        for (let j = 1; j < rows.length - 1; j++) {
-            if (grid[i][j] > highestTree) {
-                highestTree = grid[i][j];
-                visibleGrid[i][j] = 1;
+    // left and right view
+    for (let row = 1; row < rows.length - 1; row++) {
+        let highestTreeLeft = grid[row][0];
+        let highestTreeRight = grid[row][rows.length - 1];
+        for (let col = 1; col < rows.length - 1; col++) {
+            if (grid[row][col] > highestTreeLeft) {
+                highestTreeLeft = grid[row][col];
+                visibleTreesGrid[row][col] = 1;
+            }
+            if (grid[row][rows.length - 1 - col] > highestTreeRight) {
+                highestTreeRight = grid[row][rows.length - 1 - col];
+                visibleTreesGrid[row][rows.length - 1 - col] = 1;
             }
         }
     }
 
-    for (let i = 1; i < rows.length - 1; i++) {
-        let highestTree = grid[0][i];
-        for (let j = 1; j < rows.length - 1; j++) {
-            if (grid[j][i] > highestTree) {
-                highestTree = grid[j][i];
-                visibleGrid[j][i] = 1;
+    // top and bottom view
+    for (let col = 1; col < rows.length - 1; col++) {
+        let highestTreeTop = grid[0][col];
+        let highestTreeBottom = grid[rows.length - 1][col];
+        for (let row = 1; row < rows.length - 1; row++) {
+            if (grid[row][col] > highestTreeTop) {
+                highestTreeTop = grid[row][col];
+                visibleTreesGrid[row][col] = 1;
+            }
+            if (grid[rows.length - 1 - row][col] > highestTreeBottom) {
+                highestTreeBottom = grid[rows.length - 1 - row][col];
+                visibleTreesGrid[rows.length - 1 - row][col] = 1;
             }
         }
     }
 
-    for (let i = 1; i < rows.length - 1; i++) {
-        let highestTree = grid[i][rows.length - 1];
-        for (let j = rows.length - 2; j > 0; j--) {
-            if (grid[i][j] > highestTree) {
-                highestTree = grid[i][j];
-                visibleGrid[i][j] = 1;
-            }
-        }
-    }
-
-    for (let i = 1; i < rows.length - 1; i++) {
-        let highestTree = grid[rows.length - 1][i];
-        for (let j = rows.length - 2; j > 0; j--) {
-            if (grid[j][i] > highestTree) {
-                highestTree = grid[j][i];
-                visibleGrid[j][i] = 1;
-            }
-        }
-    }
-
-    console.log(visibleGrid);
-    console.log(visibleGrid.flat().reduce((sum, tree) => sum + tree));
-    return visibleTreesCount + visibleGrid.flat().reduce((sum, tree) => sum + tree);
+    return visibleTreesCount + visibleTreesGrid.flat().reduce((sum, tree) => sum + tree);
 }

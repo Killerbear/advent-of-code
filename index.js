@@ -20,6 +20,7 @@ function generateSrc(id) {
 }
 
 function addScriptAndStartCalculation(src, buttonId) {
+    console.clear();
     if (!scripts.includes(src)) {
         scripts.push(src);
         const script = document.createElement("script");
