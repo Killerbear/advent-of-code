@@ -4,20 +4,14 @@ let tailPosition = [];
 
 function solve2022Day9Task1(inputString) {
     let moves = [];
+    headPosition = [0, 0];
+    tailPosition = [0, 0];
+    visitedPosition = new Map();
 
     inputString.split("\n").map((move, index) => {
         moves[index] = move.split(" ");
         moves[index][1] = parseInt(moves[index][1], 10);
     });
-
-    let maxGridSize = moves
-        .map((move) => move[1])
-        .sort((a, b) => a - b)
-        .pop();
-    maxGridSize = parseInt(maxGridSize, 10);
-
-    headPosition = [maxGridSize, maxGridSize];
-    tailPosition = [maxGridSize, maxGridSize];
 
     moves.map((move) => {
         for (let moveCount = 0; moveCount < move[1]; moveCount++) {
@@ -26,20 +20,14 @@ function solve2022Day9Task1(inputString) {
         }
     });
 
-    let tailMovesGrid = new Array(maxGridSize);
-    tailMovesGrid.map((moves, index) => {
-        let array = new Array(maxGridSize);
-        array.map((item, index) => (array[index] = "."));
-        tailMovesGrid[index].push(array);
-    });
     return visitedPosition.size;
 }
 
-function xDistance([x1, y1], [x2, y2]) {
+function xDistance([x1, y1], [x2]) {
     return x1 - x2;
 }
 
-function yDistance([x1, y1], [x2, y2]) {
+function yDistance([x1, y1], [, y2]) {
     return y1 - y2;
 }
 

@@ -5,7 +5,7 @@ let headPosition = [500, 500];
 let tailPosition = [500, 500];
 let loopIteration = 0;
 
-function solve2022Day9Task1(inputString) {
+function solve2022Day9Task1animated(inputString) {
     let moves = [];
 
     inputString.split("\n").map((move, index) => {
@@ -24,18 +24,18 @@ function solve2022Day9Task1(inputString) {
     myLoop(movesArray);
 
     visitedPosition.forEach((value, key) => {
-        let [x, y] = key.split("");
+        let [x, y] = key.split(",");
         movesGrid[gridSize - 1 - y][x] = "#";
     });
 
     return visitedPosition.size;
 }
 
-function xDistance([x1, y1], [x2, y2]) {
+function xDistance([x1, y1], [x2]) {
     return x1 - x2;
 }
 
-function yDistance([x1, y1], [x2, y2]) {
+function yDistance([x1, y1], [, y2]) {
     return y1 - y2;
 }
 
@@ -86,7 +86,7 @@ function moveTail() {
         tailPosition[1] = headPosition[1] + 1;
     }
 
-    visitedPosition.set(`${tailPosition[0]}${tailPosition[1]}`, true);
+    visitedPosition.set(`${tailPosition[0]},${tailPosition[1]}`, true);
     // drawGrid();
 }
 
