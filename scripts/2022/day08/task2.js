@@ -1,4 +1,4 @@
-function solve2022Day8Task2(inputString) {
+function solve2022Day08Task2(inputString) {
     let rows = inputString.split("\n");
     let grid = [];
     let scenicScoreGrid = [];

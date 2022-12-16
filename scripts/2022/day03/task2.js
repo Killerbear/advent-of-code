@@ -1,4 +1,4 @@
-function solve2022Day3Task2(inputString) {
+function solve2022Day03Task2(inputString) {
     let solution = 0;
     let rucksacks = inputString.split("\n");
     for (let i = 0; i < rucksacks.length; i = i + 3) {

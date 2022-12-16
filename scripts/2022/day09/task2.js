@@ -2,7 +2,7 @@ let visitedTailPositions = new Map();
 let knots = [];
 let ropeLength = 10;
 
-function solve2022Day9Task2(inputString) {
+function solve2022Day09Task2(inputString) {
     let moves = [];
     visitedTailPositions = new Map();
     knots = [...Array(ropeLength)].map(() => Array(2).fill(0));

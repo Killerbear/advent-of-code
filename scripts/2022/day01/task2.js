@@ -1,4 +1,4 @@
-function solve2022Day1Task2(inputString) {
+function solve2022Day01Task2(inputString) {
     let elvesGroup = inputString.split("\n\n");
     let caloriesSums = new Array(elvesGroup.length);
     let elves = new Array(elvesGroup.length);

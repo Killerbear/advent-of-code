@@ -1,12 +1,9 @@
-function solve2022Day7Task2(inputString) {
+function solve2022Day07Task1(inputString) {
     let tree = createTree(inputString);
-    let sums = tree.getDirectorySizesArray();
-    let freeSpace = 70000000 - sums[0];
-    let neededSpace = 30000000 - freeSpace;
-    return sums
-        .filter((size) => size >= neededSpace)
-        .sort((a, b) => b - a)
-        .pop();
+    return tree
+        .getDirectorySizesArray()
+        .filter((sizes) => sizes <= 100000)
+        .reduce((sum, size) => sum + size);
 }
 
 function createTree(treeInputString) {

@@ -1,6 +1,6 @@
 const Combinations1 = new Map();
 
-function solve2022Day2Task1(inputString) {
+function solve2022Day02Task1(inputString) {
     setAllPossibleCombination1();
     let solution = 0;
     let games = inputString.split("\n");

@@ -1,4 +1,4 @@
-function solve2022Day4Task2(inputString) {
+function solve2022Day04Task2(inputString) {
     let solution = 0;
     let assignments = inputString
         .split("\n")

@@ -1,4 +1,4 @@
-function solve2022Day1Task1(inputString) {
+function solve2022Day01Task1(inputString) {
     let solution = 0;
     let elvesGroup = inputString.split("\n\n");
     let elves = new Array(elvesGroup.length);
