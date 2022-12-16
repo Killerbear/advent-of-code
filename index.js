@@ -14,8 +14,8 @@ for (let button of buttons) {
 
 function generateSrc(id) {
     let year = id.slice(5, 9);
-    let day = id.slice(12, 13);
-    let task = id.slice(17, 18);
+    let day = id.substring(id.indexOf("Day") + 3, id.lastIndexOf("Task"));
+    let task = id[id.length - 1];
     return `./scripts/${year}/day${day}/task${task}.js`;
 }
 
