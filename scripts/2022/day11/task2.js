@@ -11,14 +11,8 @@ function solve2022Day11Task2(inputString) {
             monkeys2.push(new Monkey(monkeyInput.substring(monkeyInput.indexOf("Starting"))));
         });
 
-    monkeys2.forEach((monkey, index) => {
-        console.log(`Monkey ${index}:`);
-        console.log(`Starting items: ${monkey.items}`);
-        console.log(`Operation: new = old ${monkey.operation} ${monkey.operationValue}`);
-        console.log(`Test: divisible by ${monkey.testDivisor}`);
-        console.log(`TargetMonkey: ${monkey.targets}`);
-        console.log(" ");
-    });
+    let denominator = monkeys2.map((monkey) => monkey.testDivisor).reduce((sum, divisor) => sum * divisor);
+    monkeys2.map((monkey) => (monkey.denominator = denominator));
 
     for (let i = 0; i < turns; i++) {
         monkeys2.forEach((monkey, index) => {
@@ -28,6 +22,7 @@ function solve2022Day11Task2(inputString) {
         console.log(`Round ${i + 1}`);
         monkeys2.forEach((monkey, index) => {
             console.log(`Monkey ${index}: ${monkey.items}`);
+            console.log(`Monkey ${index}: ${monkey.inspections}`);
         });
     }
 
@@ -47,6 +42,7 @@ class Monkey {
     testDivisor = 0;
     targets = [];
     inspections = 0;
+    denominator = 0;
 
     constructor(input) {
         input
@@ -119,6 +115,8 @@ class Monkey {
                 newWorryLevel = item * operationValue;
         }
 
-        return Math.floor(newWorryLevel / 3);
+        console.log(newWorryLevel % this.denominator === 0);
+        newWorryLevel = newWorryLevel % this.denominator === 0 ? newWorryLevel / this.denominator : newWorryLevel;
+        return newWorryLevel;
     }
 }
