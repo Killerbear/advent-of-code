@@ -3,21 +3,41 @@ html {
     color: #ebebeb;
 }
 
-body {
-    display: flex;
+button {
+    display: block;
 }
 
-textarea {
+.puzzle-selection {
+    display: flex;
+    gap: 15px;
+}
+
+.input-output {
+    display: flex;
+    width: calc(100% - 10px);
+    margin-top: 20px;
+}
+
+.input-output div {
+    flex: auto;
+}
+
+.input-output textarea {
+    width: 100%;
     background: #1d1b1b;
     color: #ebebeb;
 }
 
-label {
+.input-output label {
     display: block;
 }
 
-button {
-    display: block;
+#solve-button {
+    margin-left: auto;
+    margin-right: 20px;
+    width: 100px;
+    height: 40px;
+    margin-top: 20px;
 }
 
 .year {

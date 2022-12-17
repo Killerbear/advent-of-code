@@ -1,25 +1,72 @@
+import puzzles from "./puzzles.json" assert { type: "json" };
+
+let scripts = [];
 let input = document.getElementById("input");
 let output = document.getElementById("output");
-const buttons = document.getElementsByTagName("button");
-let scripts = [];
+const solveButton = document.getElementById("solve-button");
+const selects = document.getElementsByTagName("select");
+const yearSelection = document.getElementById("year-selection");
+const daySelection = document.getElementById("day-selection");
 
 input.value = localStorage.getItem("puzzleInput");
 
-for (let button of buttons) {
-    button.onclick = () => {
-        let src = generateSrc(button.id);
-        addScriptAndStartCalculation(src, button.id);
-    };
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const year = urlParams.get("year");
+const day = urlParams.get("day");
+const task = urlParams.get("task");
+
+createPuzzleSelects();
+getAndSetUrlParams();
+
+solveButton.onclick = () => {
+    addScriptAndStartCalculation();
+};
+
+function createPuzzleSelects() {
+    let yearSelect = document.createElement("select");
+    yearSelect.id = "year-select";
+    yearSelection.appendChild(yearSelect);
+
+    let daySelect = document.createElement("select");
+    daySelect.id = "day-select";
+    daySelection.appendChild(daySelect);
+
+    puzzles.map((puzzleYear) => {
+        let currentYear = Object.keys(puzzleYear)[0];
+        let option = document.createElement("option");
+        option.text = currentYear;
+        option.value = currentYear;
+        selects[0].add(option);
+
+        if (currentYear === year) {
+            Object.values(puzzleYear)[0].map((puzzleDay) => {
+                let option = document.createElement("option");
+                option.text = ("0" + puzzleDay).slice(-2);
+                option.value = ("0" + puzzleDay).slice(-2);
+                selects[1].add(option);
+            });
+        }
+    });
 }
 
-function generateSrc(id) {
-    let year = id.slice(5, 9);
-    let day = id.substring(id.indexOf("Day") + 3, id.lastIndexOf("Task"));
-    let task = id[id.length - 1];
-    return `./scripts/${year}/day${day}/task${task}.js`;
+function getAndSetUrlParams() {
+    selects[0].value = year;
+    selects[1].value = day;
+    selects[2].value = task;
+
+    for (let select of selects) {
+        select.onchange = () => {
+            urlParams.set(select.id.split("-")[0], select.value);
+            window.location.search = urlParams;
+        };
+    }
 }
 
-function addScriptAndStartCalculation(src, buttonId) {
+function addScriptAndStartCalculation() {
+    let functionName = `solve${year}Day${day}Task${task}`;
+    let src = `./scripts/${year}/day${day}/task${task}.js`;
+
     console.clear();
     if (!scripts.includes(src)) {
         scripts.push(src);
@@ -27,10 +74,10 @@ function addScriptAndStartCalculation(src, buttonId) {
         script.src = src;
         document.body.appendChild(script);
         script.onload = function () {
-            calculateOutput(buttonId);
+            calculateOutput(functionName);
         };
     } else {
-        calculateOutput(buttonId);
+        calculateOutput(functionName);
     }
 }
 
