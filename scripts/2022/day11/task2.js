@@ -1,7 +1,7 @@
 let monkeys2 = [];
 
 function solve2022Day11Task2(inputString) {
-    let turns = 20;
+    let turns = 10000;
     monkeys2 = [];
 
     inputString
@@ -18,15 +18,7 @@ function solve2022Day11Task2(inputString) {
         monkeys2.forEach((monkey, index) => {
             monkey.throwItems();
         });
-        console.log("------------------");
-        console.log(`Round ${i + 1}`);
-        monkeys2.forEach((monkey, index) => {
-            console.log(`Monkey ${index}: ${monkey.items}`);
-            console.log(`Monkey ${index}: ${monkey.inspections}`);
-        });
     }
-
-    console.log(monkeys2.map((monkey) => monkey.inspections));
 
     return monkeys2
         .map((monkey) => monkey.inspections)
@@ -91,7 +83,8 @@ class Monkey {
     }
 
     throwItems() {
-        this.items.map((item) => {
+        while(this.items.length) {
+            let item = this.items.pop()
             this.inspections++;
             let worryLevel = this.calculateWorryLevel(item);
             if (worryLevel % this.testDivisor === 0) {
@@ -99,8 +92,7 @@ class Monkey {
             } else {
                 monkeys2[this.targets[1]].items.push(worryLevel);
             }
-        });
-        this.items = [];
+        }
     }
 
     calculateWorryLevel(item) {
@@ -115,8 +107,6 @@ class Monkey {
                 newWorryLevel = item * operationValue;
         }
 
-        console.log(newWorryLevel % this.denominator === 0);
-        newWorryLevel = newWorryLevel % this.denominator === 0 ? newWorryLevel / this.denominator : newWorryLevel;
-        return newWorryLevel;
+        return newWorryLevel % this.denominator;
     }
 }

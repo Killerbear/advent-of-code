@@ -79,7 +79,8 @@ class Monkey {
     }
 
     throwItems() {
-        this.items.map((item) => {
+        while(this.items.length) {
+            let item = this.items.pop()
             this.inspections++;
             let worryLevel = this.calculateWorryLevel(item);
             if (worryLevel % this.testDivisor === 0) {
@@ -87,8 +88,7 @@ class Monkey {
             } else {
                 monkeys[this.targets[1]].items.push(worryLevel);
             }
-        });
-        this.items = [];
+        }
     }
 
     calculateWorryLevel(item) {
