@@ -1,56 +1,61 @@
 let schematicsLines = [];
 let stringLength = 0;
+let gearsWithAdjacentSymbol = new Map();
 
 function solve2023Day03Task2(inputString) {
+    gearsWithAdjacentSymbol = new Map();
     schematicsLines = inputString.split("\n");
     stringLength = schematicsLines[0].length;
-    let validNumbers = [];
+    let sum = 0;
 
     schematicsLines.forEach((line, lineIndex) => {
         const regex = /\d+/g;
         let numbers = line.matchAll(regex);
         [...numbers].forEach((number) => {
-            console.log(number[0], number.index, lineIndex);
-            console.log(hasAdjacentSymbol(number, lineIndex));
-            if (hasAdjacentSymbol(number, lineIndex)) {
-                validNumbers.push(Number(number));
-            }
+            buildAdjacentSymbolTable(number, lineIndex);
         });
     });
 
-    return validNumbers.reduce((sum, number) => sum + number);
+    for (const [, gears] of gearsWithAdjacentSymbol.entries()) {
+        if (gears.length === 2) {
+            sum += gears[0] * gears[1];
+        }
+    }
+
+    return sum;
 }
 
-function hasAdjacentSymbol(number, lineIndex) {
-    // left: 1 nach links eine Nummer? dann alle Zahlen links von * suchen und die letzte Zahl nehmen
-    // right: 1 nach rechts eine Nummer? dann alle Zahlen rechts von * suchen und die erste Zahl nehmen
-    // top: alle zahlen top suchen und dann alle index mit dem index von * vergleichen
-    // index von * muss zwischen zahl-start-index - 1 und zahl-end-index + 1 liegen
-    // z.b. .222...
-    //      ....*..
-    // zahl-indexes=[0,4] *-index=4
-    // also passt die Zahl
-
-    const symbolsRegex = /[*]+/g;
-    let top = false;
-    let right = false;
-    let bottom = false;
-    let left = false;
+function buildAdjacentSymbolTable(number, lineIndex) {
+    const symbolsRegex = /[^\d|^.]+/g;
 
     // check for symbol to the left
     if (number.index !== 0) {
-        const search = schematicsLines[lineIndex].slice(number.index - 1, number.index).match(symbolsRegex);
-        console.log("left: " + search);
-        left = !!search;
+        const end = number.index;
+        const start = end - 1;
+        const search = schematicsLines[lineIndex].slice(start, end).match(symbolsRegex);
+        if (search) {
+            let numbers = gearsWithAdjacentSymbol.get(`${lineIndex},${start}`);
+            if (numbers) {
+                gearsWithAdjacentSymbol.set(`${lineIndex},${start}`, [...numbers, number[0]]);
+            } else {
+                gearsWithAdjacentSymbol.set(`${lineIndex},${start}`, [number[0]]);
+            }
+        }
     }
 
     // check for symbol to the right
     if (number.index + number.toString().length !== stringLength) {
-        const search = schematicsLines[lineIndex]
-            .slice(number.index + number.toString().length, number.index + number.toString().length + 1)
-            .match(symbolsRegex);
-        console.log("right: " + search);
-        right = !!search;
+        const start = number.index + number.toString().length;
+        const end = start + 1;
+        const search = schematicsLines[lineIndex].slice(start, end).match(symbolsRegex);
+        if (search) {
+            let numbers = gearsWithAdjacentSymbol.get(`${lineIndex},${start}`);
+            if (numbers) {
+                gearsWithAdjacentSymbol.set(`${lineIndex},${start}`, [...numbers, number[0]]);
+            } else {
+                gearsWithAdjacentSymbol.set(`${lineIndex},${start}`, [number[0]]);
+            }
+        }
     }
 
     // check for symbols on top
@@ -61,9 +66,16 @@ function hasAdjacentSymbol(number, lineIndex) {
                 ? number.index + number.toString().length
                 : number.index + number.toString().length + 1;
 
-        const search = schematicsLines[lineIndex - 1].slice(start, end).match(symbolsRegex);
-        console.log("top: " + search);
-        top = !!search;
+        const search = schematicsLines[lineIndex - 1].slice(start, end).matchAll(symbolsRegex);
+        const result = [...search];
+        if (result.length) {
+            let numbers = gearsWithAdjacentSymbol.get(`${lineIndex - 1},${start + result[0].index}`);
+            if (numbers) {
+                gearsWithAdjacentSymbol.set(`${lineIndex - 1},${start + result[0].index}`, [...numbers, number[0]]);
+            } else {
+                gearsWithAdjacentSymbol.set(`${lineIndex - 1},${start + result[0].index}`, [number[0]]);
+            }
+        }
     }
 
     // // check for symbols below
@@ -74,10 +86,15 @@ function hasAdjacentSymbol(number, lineIndex) {
                 ? number.index + number.toString().length
                 : number.index + number.toString().length + 1;
 
-        const search = schematicsLines[lineIndex + 1].slice(start, end).match(symbolsRegex);
-        console.log("bottom: " + search);
-        bottom = !!search;
+        const search = schematicsLines[lineIndex + 1].slice(start, end).matchAll(symbolsRegex);
+        const result = [...search];
+        if (result.length) {
+            let numbers = gearsWithAdjacentSymbol.get(`${lineIndex + 1},${start + result[0].index}`);
+            if (numbers) {
+                gearsWithAdjacentSymbol.set(`${lineIndex + 1},${start + result[0].index}`, [...numbers, number[0]]);
+            } else {
+                gearsWithAdjacentSymbol.set(`${lineIndex + 1},${start + result[0].index}`, [number[0]]);
+            }
+        }
     }
-
-    return top || right || bottom || left;
 }

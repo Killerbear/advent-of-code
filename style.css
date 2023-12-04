@@ -26,6 +26,7 @@ button {
     width: 100%;
     background: #1d1b1b;
     color: #ebebeb;
+    font-family: monospace;
 }
 
 .input-output label {
