@@ -10,8 +10,6 @@ function solve2023Day03Task1(inputString) {
         const regex = /\d+/g;
         let numbers = line.matchAll(regex);
         [...numbers].forEach((number) => {
-            console.log(number[0], number.index, lineIndex);
-            console.log(hasAdjacentSymbol(number, lineIndex));
             if (hasAdjacentSymbol(number, lineIndex)) {
                 validNumbers.push(Number(number));
             }
@@ -31,7 +29,6 @@ function hasAdjacentSymbol(number, lineIndex) {
     // check for symbol to the left
     if (number.index !== 0) {
         const search = schematicsLines[lineIndex].slice(number.index - 1, number.index).match(symbolsRegex);
-        console.log("left: " + search);
         left = !!search;
     }
 
@@ -40,7 +37,6 @@ function hasAdjacentSymbol(number, lineIndex) {
         const search = schematicsLines[lineIndex]
             .slice(number.index + number.toString().length, number.index + number.toString().length + 1)
             .match(symbolsRegex);
-        console.log("right: " + search);
         right = !!search;
     }
 
@@ -53,7 +49,6 @@ function hasAdjacentSymbol(number, lineIndex) {
                 : number.index + number.toString().length + 1;
 
         const search = schematicsLines[lineIndex - 1].slice(start, end).match(symbolsRegex);
-        console.log("top: " + search);
         top = !!search;
     }
 
@@ -66,7 +61,6 @@ function hasAdjacentSymbol(number, lineIndex) {
                 : number.index + number.toString().length + 1;
 
         const search = schematicsLines[lineIndex + 1].slice(start, end).match(symbolsRegex);
-        console.log("bottom: " + search);
         bottom = !!search;
     }
 
