@@ -1,13 +1,10 @@
-let maps = {};
-
 function solve2023Day05Task2(inputString) {
-    console.log("start");
     const stringLines = inputString.split("\n");
     let seeds = [];
     let hashMapName = "";
     let lowesLocation = 1000000000000000;
 
-    maps = {
+    let maps = {
         seed_to_soil: [],
         soil_to_fertilizer: [],
         fertilizer_to_water: [],
@@ -38,39 +35,43 @@ function solve2023Day05Task2(inputString) {
     });
 
     for (let i = 0; i < seeds.length / 2; i++) {
-        const seed = seeds[i * 2];
-        const seedRange = seeds[i * 2 + 1];
-        console.log(seed);
+        const start = seeds[i * 2];
+        const range = seeds[i * 2 + 1];
+        const [range1] = divideNumber(range);
 
-        for (let j = seed; j < seed + seedRange; j++) {
-            if (!Boolean(j % 1_000_000)) {
-                console.log(j);
-            }
-            const soil = getMappedNumber("seed_to_soil", j);
-            const fertilizer = getMappedNumber("soil_to_fertilizer", soil);
-            const water = getMappedNumber("fertilizer_to_water", fertilizer);
-            const light = getMappedNumber("water_to_light", water);
-            const temperature = getMappedNumber("light_to_temperature", light);
-            const humidity = getMappedNumber("temperature_to_humidity", temperature);
-            const location = getMappedNumber("humidity_to_location", humidity);
+        const start1 = start;
+        const end1 = start + range1;
+        const start2 = end1 + 1;
+        const end2 = start + range;
+
+        const worker1 = new Worker("./scripts/2023/day05/worker.js");
+        worker1.addEventListener("message", (e) => {
+            const location = e.data;
             if (location < lowesLocation) {
                 lowesLocation = location;
             }
-        }
+            console.log(lowesLocation);
+        });
+        worker1.postMessage({ maps, start: start1, end: end1 });
+
+        const worker2 = new Worker("./scripts/2023/day05/worker.js");
+        worker2.addEventListener("message", (e) => {
+            const location = e.data;
+            if (location < lowesLocation) {
+                lowesLocation = location;
+            }
+            console.log(lowesLocation);
+        });
+        worker2.postMessage({ maps, start: start2, end: end2 });
     }
 
-    console.log("finish");
-    return lowesLocation;
+    // return lowesLocation;
 }
 
-function getMappedNumber(map, number) {
-    let mappedNumber = number;
-    maps[map].forEach(([destination, source, range]) => {
-        const isInRange = number >= source && number <= source + range - 1;
-        if (isInRange) {
-            mappedNumber = number + (destination - source);
-        }
-    });
-
-    return mappedNumber;
+function divideNumber(number) {
+    if (number % 2 === 0) {
+        return [number / 2, number / 2 + 1];
+    } else {
+        return [Math.floor(number / 2), Math.floor(number / 2) + 1];
+    }
 }
