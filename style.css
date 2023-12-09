@@ -26,7 +26,8 @@ button {
     width: -webkit-fill-available;
     background: #1d1b1b;
     color: #ebebeb;
-    font-family: monospace;
+    font-family: "Source Code Pro", monospace;
+    font-weight: 300;
 }
 
 .input-output label {
