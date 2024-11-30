@@ -1,5 +1,4 @@
-import puzzles from "./puzzles.json" assert { type: "json" };
-
+let puzzles;
 let scripts = [];
 let input = document.getElementById("input");
 let output = document.getElementById("output");
@@ -8,7 +7,13 @@ const selects = document.getElementsByTagName("select");
 const yearSelection = document.getElementById("year-selection");
 const daySelection = document.getElementById("day-selection");
 
-input.value = localStorage.getItem("puzzleInput");
+fetch("./puzzles.json")
+    .then((response) => response.json())
+    .then((data) => {
+        puzzles = data;
+        initializeApp();
+    })
+    .catch((error) => console.error("Error loading puzzles:", error));
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -16,12 +21,15 @@ const year = urlParams.get("year");
 const day = urlParams.get("day");
 const task = urlParams.get("task");
 
-createPuzzleSelects();
-getAndSetUrlParams();
-
 solveButton.onclick = () => {
     addScriptAndStartCalculation();
 };
+
+function initializeApp() {
+    input.value = localStorage.getItem("puzzleInput");
+    createPuzzleSelects();
+    getAndSetUrlParams();
+}
 
 function createPuzzleSelects() {
     let yearSelect = document.createElement("select");
